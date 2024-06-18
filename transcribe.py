@@ -3,7 +3,6 @@ import pyaudio
 import wave
 import time
 import numpy as np
-import pvporcupine
 import struct
 from faster_whisper import WhisperModel
 
@@ -21,9 +20,6 @@ CHUNK = 1024
 THRESHOLD = 1500  # Adjust this threshold based on your environment and microphone sensitivity
 SILENT_CHUNKS_TO_STOP = int(2 * RATE / CHUNK)  # Number of silent chunks to stop recording
 
-# Access key for Porcupine
-access_key = "key"
-keyword_paths = ['./Wakeword.ppn']
 
 def is_silent(chunk):
     # Check if the amplitude of the audio chunk is below the threshold
@@ -116,16 +112,15 @@ def wakeword():
 
 if __name__ == '__main__':
     try:
-        if wakeword():
-            audio_data, sample_rate = record_until_silence()
-            audio_filename = "recorded_audio.wav"
-            save_audio(audio_filename, audio_data, sample_rate)
+        audio_data, sample_rate = record_until_silence()
+        audio_filename = "recorded_audio.wav"
+        save_audio(audio_filename, audio_data, sample_rate)
 
-            print("Audio saved to:", audio_filename)
+        print("Audio saved to:", audio_filename)
 
-            # Perform transcription
-            transcription = transcribe_audio(audio_filename)
-            print("Transcription:", transcription)
+        # Perform transcription
+        transcription = transcribe_audio(audio_filename)
+        print("Transcription:", transcription)
 
 
     except Exception as e:
